@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Test</title>
+    <style>
+        img {
+            max-width: 300px;
+            border: 1px solid #ccc;
+            margin: 10px;
+        }
+        div {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Image Visibility Test</h1>
+    
+    <div>
+        <h2>Signatures - Direct Path</h2>
+        <img src="/storage/signatures/1747398843_applicant_signature_whatsapp-black-logo-icon-transparent-png-701751695033911ohce7u0egy.png" alt="Test Signature 1">
+    </div>
+    
+    <div>
+        <h2>Signatures - Without Prefix</h2>
+        <img src="/storage/1747398843_applicant_signature_whatsapp-black-logo-icon-transparent-png-701751695033911ohce7u0egy.png" alt="Test Signature 2">
+    </div>
+    
+    <div>
+        <h2>Sketches - Direct Path</h2>
+        <img src="/storage/sketches/1747398843_sketch_residence_whatsapp-black-logo-icon-transparent-png-701751695033911ohce7u0egy.png" alt="Test Sketch 1">
+    </div>
+    
+    <div>
+        <h2>Sketches - Without Prefix</h2>
+        <img src="/storage/1747398843_sketch_residence_whatsapp-black-logo-icon-transparent-png-701751695033911ohce7u0egy.png" alt="Test Sketch 2">
+    </div>
+
+    <script>
+        // Log when images fail to load
+        document.querySelectorAll('img').forEach(img => {
+            img.onerror = function() {
+                console.error('Failed to load image:', this.src);
+                this.style.border = '2px solid red';
+                this.style.padding = '10px';
+                this.alt = 'Failed to load: ' + this.src;
+            };
+            img.onload = function() {
+                console.log('Successfully loaded image:', this.src);
+                this.style.border = '2px solid green';
+            };
+        });
+    </script>
+</body>
+</html> 
