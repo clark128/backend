@@ -10,11 +10,49 @@ use Illuminate\Support\Facades\Validator;
 class MotorcycleController extends Controller
 {
     /**
+     * Transform the image paths to proper URLs
+     */
+    private function transformImagePaths($motorcycle)
+    {
+        if ($motorcycle->image_path) {
+            // Normalize path separators
+            $path = str_replace('\\', '/', $motorcycle->image_path);
+            // Remove any 'public/' or 'storage/' prefix
+            $path = preg_replace('/^(public\/|storage\/)*/', '', $path);
+            // Ensure the path starts with motorcycle_images/ if it doesn't already
+            if (!str_starts_with($path, 'motorcycle_images/')) {
+                $path = 'motorcycle_images/' . $path;
+            }
+            $motorcycle->image_path = $path;
+        }
+
+        if ($motorcycle->specification_image_path) {
+            // Normalize path separators
+            $path = str_replace('\\', '/', $motorcycle->specification_image_path);
+            // Remove any 'public/' or 'storage/' prefix
+            $path = preg_replace('/^(public\/|storage\/)*/', '', $path);
+            // Ensure the path starts with specification_images/ if it doesn't already
+            if (!str_starts_with($path, 'specification_images/')) {
+                $path = 'specification_images/' . $path;
+            }
+            $motorcycle->specification_image_path = $path;
+        }
+
+        return $motorcycle;
+    }
+
+    /**
      * Display a listing of the resource.
      */
     public function index()
     {
         $motorcycles = Motorcycle::all();
+        
+        // Transform each motorcycle to include full URLs
+        $motorcycles->transform(function ($motorcycle) {
+            return $this->transformImagePaths($motorcycle);
+        });
+
         return response()->json($motorcycles);
     }
 
@@ -47,6 +85,9 @@ class MotorcycleController extends Controller
         }
 
         $motorcycle = Motorcycle::create($data);
+        
+        // Transform the response to include full URLs
+        $motorcycle = $this->transformImagePaths($motorcycle);
 
         return response()->json($motorcycle, 201);
     }
@@ -56,6 +97,9 @@ class MotorcycleController extends Controller
      */
     public function show(Motorcycle $motorcycle)
     {
+        // Transform the response to include full URLs
+        $motorcycle = $this->transformImagePaths($motorcycle);
+
         return response()->json($motorcycle);
     }
 
@@ -104,6 +148,9 @@ class MotorcycleController extends Controller
         }
 
         $motorcycle->update($data);
+
+        // Transform the response to include full URLs
+        $motorcycle = $this->transformImagePaths($motorcycle);
 
         return response()->json($motorcycle);
     }

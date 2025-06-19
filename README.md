@@ -1,6 +1,6 @@
 LARAVEL 10
 
-Github Repository Backend : https://github.com/ClarkGenesis/Backend
+Github Repository Backend : https://github.com/ClarkGenesis/Backend-premio
 
 🧰 1. XAMPP and Database Setup
 🔹 Install XAMPP

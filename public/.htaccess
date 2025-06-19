@@ -5,6 +5,9 @@
 
     RewriteEngine On
 
+    # Allow direct access to storage directory
+    RewriteRule ^storage/(.*)$ storage/$1 [L]
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
@@ -19,3 +22,8 @@
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 </IfModule>
+
+# Enable CORS for image files
+<FilesMatch "\.(jpg|jpeg|png|gif)$">
+    Header set Access-Control-Allow-Origin "*"
+</FilesMatch>
